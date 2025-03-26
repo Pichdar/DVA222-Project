@@ -347,7 +347,7 @@ public class GUI : Window{
         label.Name = "Connect4";
         ApplyCss(label, $"#Connect4{{ background-image:none; color: purple; padding: 10px; font-size: 30px;}}");
         label.SetSizeRequest(200, 100);
-		container.Put(label, cell_size*cols/4+25, cell_size*rows - 20);
+		container.Put(label, cell_size*cols/2-100+10, cell_size*rows - 20);
 
         end_screen.Name = "end_screen";      
         end_screen.SetSizeRequest(200, 100);
@@ -433,13 +433,13 @@ public class Cell{
     }
 }
 public class Connect4 : GameLogic{
-    public Connect4(int size, string back_color, string line_color) : base(new BoardRenderer(size + 1, size, 50, back_color, line_color, new Cell())) {}
+    public Connect4(int size, int cell_size, string back_color, string line_color) : base(new BoardRenderer(size + 1, size, cell_size, back_color, line_color, new Cell())) {}
 }
 public class Program{
     public static void Main()
     {
         Application.Init();
-        Connect4 gridler = new(9,"black","purple");
+        Connect4 gridler = new(9,50,"black","purple");
         Application.Run();
     }
 }
