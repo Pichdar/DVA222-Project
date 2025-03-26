@@ -19,7 +19,6 @@ public class GameLogic {
     private GUI gui;
     public GameLogic(BoardRenderer board) {
         this.Board = board;
-        System.Console.WriteLine($"{Board.rows}, {Board.cols}, {Board.cell_size}");
         gui = new GUI(Board.rows, Board.cols, Board.cell_size, this);
         
     }
