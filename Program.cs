@@ -7,15 +7,13 @@ namespace Gtk;
 
 //Code by Vidar Ersson & Maverick I. N.
 
-public class GameLogic {    
+public class GameLogic {    // Class to handle the logic of the game
     
     public bool is_human_turn = true, game_on = false, winner = false;
     private bool move_made = false, loop = false;
     private uint timeout_id = 0;
     static private Random rnd = new Random();
     public BoardRenderer Board{get;}
-    
-    
     private GUI gui;
     public GameLogic(BoardRenderer board) {
         this.Board = board;
@@ -33,14 +31,13 @@ public class GameLogic {
             }
         }
     }
-    
     private bool GameHandler()
     {
         if(is_human_turn)
         {
             if(CheckWinner())
             {
-                gui.WinScreen(is_human_turn);
+                gui.WinScreen(is_human_turn);   // Displays "You won!" on the screen
                 Console.WriteLine("You won");
                 winner = true;
                 Board.drawingarea.QueueDraw();
@@ -61,7 +58,7 @@ public class GameLogic {
             {
                 if(CheckWinner())
                 {
-                    gui.WinScreen(is_human_turn);
+                    gui.WinScreen(is_human_turn); // Displays "You lost!" on the screen
                     Console.WriteLine("You lost");
                     winner = true;
                     Board.drawingarea.QueueDraw();
@@ -84,7 +81,7 @@ public class GameLogic {
             do
             {
                 rand_col = rnd.Next(Board.cols);
-                rand_row = rnd.Next(1,Board.rows);
+                rand_row = rnd.Next(1,Board.rows);  // Makes it so a circle cant be placed on the top row
             }
             while(Board.grid[rand_row,rand_col] != 0 && !IsFilled());
             if(!IsFilled())
@@ -153,7 +150,7 @@ public class GameLogic {
         }
         return false;
     }
-    private bool FindBottom(int which_column)
+    private bool FindBottom(int which_column)   // Finds the bottom of the selected column, returns true if the column isnt full and has placed a piece
     {
         int value;
         for(int i = Board.rows-1; i >= 0; i--)
@@ -169,10 +166,9 @@ public class GameLogic {
         }
         return false;
     }
-
     public void StartGameButton(object obj, EventArgs eventArgs)
     {
-        loop = false;
+        loop = false;   // Stops the loop if fill board was previously selected
         Board.ClearGrid();
         winner = false;
         gui.end_screen.Hide();
@@ -193,7 +189,7 @@ public class GameLogic {
     public void RandomMoveButton(object obj, EventArgs eventArgs)
     {
         game_on = false;
-        loop = !loop;
+        loop = !loop;   // Flips the loop boolean when you press the button
         Board.ClearGrid();
         gui.end_screen.Hide();
     
@@ -213,7 +209,7 @@ public class GameLogic {
     
     }
 }
-public class BoardRenderer
+public class BoardRenderer  // Handles drawing the board 
 {     
     public int rows, cols, cell_size;
     private string back_color, line_color;
@@ -301,12 +297,11 @@ public class BoardRenderer
                         return new Color(0,0,0); // Default to black if unknown
                 }
             }
-
     public void PlacePieceInCell(int [,] grid, int row, int col, int value){
         Cell.ChangeValue(grid, row, col, value);
     }
 }
-public class GUI : Window{
+public class GUI : Window{  // Handles drawing the buttons, WinScreen and OnKeyPressEvent
     public Fixed container;
     public Label end_screen;
     public Button play_game_button, fill_grid_button;
@@ -369,7 +364,6 @@ public class GUI : Window{
         StyleContext context = widget.StyleContext;
         context.AddProvider(provider, Gtk.StyleProviderPriority.Application);
     }
-
     public void WinScreen(bool is_human_turn){
         
         if(is_human_turn)
@@ -405,7 +399,7 @@ public class GUI : Window{
     }
 
 }
-public class Cell{
+public class Cell{  // Handles drawing the circles in the cells and changing their value
     public void MakeCircle(Context Cr, int rows, int cols, int cell_size, int [,] grid)
     {
         for(int i = 0; i < rows; i++)
@@ -431,7 +425,7 @@ public class Cell{
         grid[row, column] = value;    
     }
 }
-public class Connect4 : GameLogic{
+public class Connect4 : GameLogic{  // Used to simplify the user experiance in Main
     public Connect4(int size, int cell_size, string back_color, string line_color) : base(new BoardRenderer(size + 1, size, cell_size, back_color, line_color, new Cell())) {}
 }
 public class Program{
