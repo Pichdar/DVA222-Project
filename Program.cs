@@ -5,9 +5,9 @@ using Cairo;
 using System.Security.Cryptography.X509Certificates;
 namespace Gtk;
 
-//Code by Vidar Ersson & Maverick I. N.
+// Code by Vidar Ersson & Maverick I. N.
 
-public class GameLogic {    // Class to handle the logic of the game
+public class GameLogic {    // Handles the logic of the game
     
     public bool is_human_turn = true, game_on = false, winner = false;
     private bool move_made = false, loop = false;
@@ -18,7 +18,6 @@ public class GameLogic {    // Class to handle the logic of the game
     public GameLogic(BoardRenderer board) {
         this.Board = board;
         gui = new GUI(Board.rows, Board.cols, Board.cell_size, this);
-        
     }
     
     public void MoveHandler(int column)
