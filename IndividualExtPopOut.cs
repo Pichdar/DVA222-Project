@@ -213,16 +213,16 @@ public class GameLogic {    // Handles the logic of the game
     }
 
     public bool PopOut(int selectedCol){
-        if(Board.grid[Board.rows-1,selectedCol] == 0){
+        if(Board.grid[Board.rows-1,selectedCol] == 0){  // Returns false if there isnt anything to popOut int he selected column
             return false;
         }
-        Board.grid[Board.rows-1,selectedCol] = 0;
-        for(int i = 1; Board.grid[Board.rows - i-1, selectedCol] != 0 && i<Board.rows; i++){
-            (Board.grid[Board.rows - i, selectedCol],Board.grid[Board.rows - i-1, selectedCol]) = (Board.grid[Board.rows - i-1, selectedCol], Board.grid[Board.rows - i, selectedCol]);
+        Board.grid[Board.rows-1,selectedCol] = 0;   // Sets the bottom cell to 0, indicating that it is empty
+        for(int i = 1; Board.grid[Board.rows - i-1, selectedCol] != 0 && i<Board.rows; i++){    // Moves all remaining tokens down by using (a,b) = (b,a) 
+            (Board.grid[Board.rows - i, selectedCol], Board.grid[Board.rows - i-1, selectedCol]) =  // To move the now empty token to the top of the column or until the token finds another 0
+            (Board.grid[Board.rows - i-1, selectedCol], Board.grid[Board.rows - i, selectedCol]);
         }
-        Console.WriteLine($"Removed a token at col {selectedCol + 1}");
-
-        return true;
+        Console.WriteLine($"Removed a token at col {selectedCol + 1}"); // Mostly for debugging
+        return true;    // Returns true to indicate that a token was removed
     }
 }
 public class BoardRenderer  // Handles drawing the board 
@@ -406,11 +406,9 @@ public class GUI : Window{  // Handles drawing the buttons, WinScreen and OnKeyP
             Application.Quit();
         }
         else if(ev.Key == Gdk.Key.Control_L){
-            popOutMode = !popOutMode;
+            popOutMode = !popOutMode;   // Inverts the toggle
             if(popOutMode){ ApplyCss(label, $"#Connect4{{ color: red;}}"); label.Text = "Connect 4 - Pop-out"; }
             else{ ApplyCss(label, $"#Connect4{{ color: green;}}"); label.Text = "Connect 4 - Place"; }
-           
-
         }
         else if (ev.Key >= Gdk.Key.Key_1 && ev.Key <= Gdk.Key.Key_9 && GameLogic.game_on)
         {
